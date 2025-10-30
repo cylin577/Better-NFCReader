@@ -26,16 +26,16 @@ include $(DEVKITARM)/3ds_rules
 #     - icon.png
 #     - <libctru folder>/default_icon.png
 #---------------------------------------------------------------------------------
-TARGET		:=	NFCReader
+TARGET		:=	Better-NFCReader
 BUILD		:=	build
 SOURCES		:=	source
-DATA		:=	data
+ROMFS		:=	romfs
 INCLUDES	:=	include
 ROMFS		:=	romfs
 
-APP_TITLE		:= NFC Reader
-APP_DESCRIPTION	:= Reads RFID/NFC Tag ID's
-APP_AUTHOR		:= Jasper Peters (MrJPGames)
+APP_TITLE		:= Better-NFCReader
+APP_DESCRIPTION	:= Read 0x7 NFC/RFID tags
+APP_AUTHOR		:= Jasper Peters (MrJPGames), cylin577
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -46,14 +46,14 @@ CFLAGS	:=	-g -Wall -O2 -mword-relocations \
 			-fomit-frame-pointer -ffast-math \
 			$(ARCH)
 
-CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS
+CFLAGS	+=	$(INCLUDE) -D__3DS__
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lsf2d -lsfil -lcitro3d -lsftd -lfreetype -lpng -ljpeg -lz -lctru -lm
+LIBS	:= -lcitro2d -lcitro3d -lctru -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
