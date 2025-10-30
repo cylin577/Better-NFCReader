@@ -10,7 +10,4 @@ Possible future additions:<br>
 
 Please note:<br>
 This was created in the oringnal author's high school days for fun. It is designed to scan the specific type of RFID tag he's high school used. And it will only show the UID (which is the part my high school used for their systems). It does not do anythings other than that, not will it ever (unless you fork it I guess ;))<br>
-                                                                                                                                           ^<br>
-                                                                                                                                           |<br>
-                                                                                                                                    Yes, I will       
-
+                                                                                                                                         
