@@ -1,6 +1,7 @@
 #include <3ds.h>
 #include <citro2d.h>
 #include <string.h>
+#include <stdio.h>
 
 #define SCREEN_WIDTH  400
 #define SCREEN_HEIGHT 240
@@ -21,19 +22,51 @@ bool compareUID(const u8 *a, const u8 *b, int len) {
 int main(int argc, char **argv)
 {
     // === Initialize services ===
-    romfsInit();
     gfxInitDefault();
     C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
     C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
     C2D_Prepare();
 
-    nfcInit(NFC_OpType_NFCTag);
-
-    // === Create screen target ===
     C3D_RenderTarget* top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
+    C3D_RenderTarget* bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
-    // === Load font ===
+    // Red screen at the beginning
+    C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+    C2D_TargetClear(top, C2D_Color32(255, 0, 0, 255));
+    C3D_FrameEnd(0);
+    gfxFlushBuffers();
+    gfxSwapBuffers();
+    gspWaitForVBlank();
+
+    romfsInit();
+
+    // Green screen after romfsInit
+    C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+    C2D_TargetClear(top, C2D_Color32(0, 255, 0, 255));
+    C3D_FrameEnd(0);
+    gfxFlushBuffers();
+    gfxSwapBuffers();
+    gspWaitForVBlank();
+
+    Result nfcResult = nfcInit(NFC_OpType_NFCTag);
+
+    // Blue screen after nfcInit
+    C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+    C2D_TargetClear(top, C2D_Color32(0, 0, 255, 255));
+    C3D_FrameEnd(0);
+    gfxFlushBuffers();
+    gfxSwapBuffers();
+    gspWaitForVBlank();
+
     C2D_Font font = C2D_FontLoad("romfs:/OpenSans.ttf");
+
+    // Yellow screen after font load
+    C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+    C2D_TargetClear(top, C2D_Color32(255, 255, 0, 255));
+    C3D_FrameEnd(0);
+    gfxFlushBuffers();
+    gfxSwapBuffers();
+    gspWaitForVBlank();
 
     NFC_App_State appState = NFC_STATE_SCANNING;
     NFC_TagState nfcHardwareState;
@@ -45,8 +78,15 @@ int main(int argc, char **argv)
     C2D_TextBuf g_staticBuf = C2D_TextBufNew(4096);
     C2D_Text g_staticText[3];
 
-    // Start scanning
-    nfcStartScanning(0);
+    Result scanResult = nfcStartScanning(0);
+
+    // White screen after nfcStartScanning
+    C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+    C2D_TargetClear(bottom, C2D_Color32(255, 255, 255, 255));
+    C3D_FrameEnd(0);
+    gfxFlushBuffers();
+    gfxSwapBuffers();
+    gspWaitForVBlank();
 
     while (aptMainLoop()) {
         hidScanInput();
@@ -84,6 +124,10 @@ int main(int argc, char **argv)
         }
 
         // === Draw on screen ===
+        C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+        C2D_TargetClear(top, C2D_Color32(0, 0, 0, 255));
+        C2D_SceneBegin(top);
+
         C2D_TextBufClear(g_staticBuf);
 
         C2D_TextFontParse(&g_staticText[0], font, g_staticBuf, "Better-NFCReader");
@@ -99,10 +143,6 @@ int main(int argc, char **argv)
         sprintf(scan_str, "Status: %s", appState == NFC_STATE_SCANNING ? "Looking for tag to read" : "Tag found!");
         C2D_TextFontParse(&g_staticText[2], font, g_staticBuf, scan_str);
         C2D_TextOptimize(&g_staticText[2]);
-
-        C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-        C2D_TargetClear(top, C2D_Color32(0, 0, 0, 255));
-        C2D_SceneBegin(top);
 
         C2D_DrawText(&g_staticText[0], C2D_WithColor, 10, 0, 0.5f, 0.5f, 0.5f, C2D_Color32(255,255,255,255));
         C2D_DrawText(&g_staticText[1], C2D_WithColor, 10, 16, 0.5f, 0.5f, 0.5f, C2D_Color32(255,255,255,255));

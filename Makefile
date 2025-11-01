@@ -36,6 +36,9 @@ ROMFS		:=	romfs
 APP_TITLE		:= Better-NFCReader
 APP_DESCRIPTION	:= Read 0x7 NFC/RFID tags
 APP_AUTHOR		:= Jasper Peters (MrJPGames), cylin577
+APP_PRODCODE	:= I-LOVE-YIXI
+APP_HTID		:= 0xBC469
+VERSION_MAJOR	:= 1
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -69,7 +72,7 @@ LIBDIRS	:= $(CTRULIB) $(PORTLIBS)
 ifneq ($(BUILD),$(notdir $(CURDIR)))
 #---------------------------------------------------------------------------------
 
-export OUTPUT	:=	$(CURDIR)/$(TARGET)
+export OUTPUT	:=	$(CURDIR)/$(BUILD)/$(TARGET)
 export TOPDIR	:=	$(CURDIR)
 
 export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
@@ -119,14 +122,14 @@ else
 endif
 
 ifeq ($(strip $(NO_SMDH)),)
-	export _3DSXFLAGS += --smdh=$(CURDIR)/$(TARGET).smdh
+	export _3DSXFLAGS += --smdh=$(CURDIR)/$(BUILD)/$(TARGET).smdh
 endif
 
 ifneq ($(ROMFS),)
 	export _3DSXFLAGS += --romfs=$(CURDIR)/$(ROMFS)
 endif
 
-.PHONY: $(BUILD) clean all
+.PHONY: $(BUILD) clean all generate
 
 #---------------------------------------------------------------------------------
 all: $(BUILD)
@@ -138,27 +141,32 @@ $(BUILD):
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf $(TARGET)-strip.elf $(TARGET).cia $(TARGET).3ds
+	@rm -rfv $(BUILD) $(BUILD)/$(TARGET).3dsx $(BUILD)/$(OUTPUT).smdh $(BUILD)/$(TARGET).elf $(BUILD)/$(TARGET)-strip.elf $(BUILD)/$(TARGET).cia $(BUILD)/$(TARGET).3ds resources/banner.bnr resources/icon.bin
 #---------------------------------------------------------------------------------
-$(TARGET)-strip.elf: $(BUILD)
-	@$(STRIP) --strip-all $(TARGET).elf -o $(TARGET)-strip.elf
+generate:
+	@echo Generating banner.bnr and icon.bin...
+	@bannertool makesmdh -s "Better-NFCReader" -l "Read 0x7 NFC tags!" -p "cylin577" -i icon.png -o resources/icon.bin
+	@bannertool makebanner -i resources/banner.png -a resources/audio.wav -o resources/banner.bnr
 #---------------------------------------------------------------------------------
-cci: $(TARGET)-strip.elf
-	@makerom -f cci -rsf resources/$(TARGET).rsf -target d -exefslogo -elf $(TARGET)-strip.elf -o $(TARGET).3ds
+$(BUILD)/$(TARGET)-strip.elf: $(BUILD)
+	@$(STRIP) --strip-all $(BUILD)/$(TARGET).elf -o $(BUILD)/$(TARGET)-strip.elf
+#---------------------------------------------------------------------------------
+cci: $(BUILD)/$(TARGET)-strip.elf
+	@makerom -f cci -rsf resources/$(TARGET).rsf -target d -exefslogo -elf $(BUILD)/$(TARGET)-strip.elf -o $(BUILD)/$(TARGET).3ds
 	@echo "built ... sf2d_sample.3ds"
 #---------------------------------------------------------------------------------
-cia: $(TARGET)-strip.elf
-	@makerom -f cia -o $(TARGET).cia -elf $(TARGET)-strip.elf -rsf resources/$(TARGET).rsf -icon resources/icon.bin -banner resources/banner.bnr -exefslogo -target t
+cia: generate $(BUILD)/$(TARGET)-strip.elf
+	@makerom -f cia -o $(BUILD)/$(TARGET).cia -elf $(BUILD)/$(TARGET)-strip.elf -rsf resources/%(TARGET).rsf -icon resources/icon.bin -banner resources/banner.bnr -exefslogo -target t
 	@echo "built ... $(TARGET).cia"
 #---------------------------------------------------------------------------------
 send: $(BUILD)
-	@3dslink $(TARGET).3dsx
+	@3dslink $(BUILD)/$(TARGET).3dsx
 #---------------------------------------------------------------------------------
 run: $(BUILD)
-	@citra $(TARGET).3dsx
+	@citra $(BUILD)/$(TARGET).3dsx
 #---------------------------------------------------------------------------------
-copy_cia: $(TARGET).cia
-	@cp $(TARGET).cia /mnt/GATEWAYNAND
+copy_cia: $(BUILD)/$(TARGET).cia
+	@cp $(BUILD)/$(TARGET).cia /mnt/GATEWAYNAND
 	sync
 
 #---------------------------------------------------------------------------------
