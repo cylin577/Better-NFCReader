@@ -1,0 +1,94 @@
+BasicInfo:
+  Title         : "Better-NFCReader"
+  CompanyCode   : "00"
+  ProductCode   : "I-LOVE-YIXI"
+  ContentType   : Application
+  Logo          : Homebrew
+
+RomFs:
+  RootPath      : "romfs"
+
+TitleInfo:
+  UniqueId      : 0xBC469
+  Category      : Application
+
+CardInfo:
+  MediaSize     : 128MB
+  MediaType     : Card1
+  CardDevice    : None
+
+Option:
+  UseOnSD           : true
+  FreeProductCode   : true
+  MediaFootPadding  : false
+  EnableCrypt       : false
+  EnableCompress    : true
+
+AccessControlInfo:
+  FileSystemAccess:
+    - Debug
+    - DirectSdmc
+    - DirectSdmcWrite
+
+  IdealProcessor   : 0
+  AffinityMask     : 1
+  Priority         : 16
+  MaxCpu           : 0x9E
+  DisableDebug     : false
+  EnableForceDebug : false
+  HandleTableSize  : 512
+
+  CoreVersion      : 2
+  DescVersion      : 2
+
+  ReleaseKernelMajor: "02"
+  ReleaseKernelMinor: "33"
+  MemoryType       : Application
+
+  SystemModeExt    : Legacy
+  CpuSpeed         : 804MHz
+  EnableL2Cache    : true
+  CanAccessCore2   : true
+
+  ServiceAccessControl:
+    - APT:U
+    - ac:u
+    - am:u
+    - boss:U
+    - cam:u
+    - csnd:SND
+    - dsp::DSP
+    - fs:USER
+    - gsp::Gpu
+    - hid:USER
+    - http:C
+    - ir:u
+    - mic:u
+    - ndm:u
+    - nwm::UDS
+    - ptm:u
+    - soc:U
+    - y2r:u
+    - ldr:ro
+    - ns:s
+
+SystemControlInfo:
+  SaveDataSize: 128KB
+  StackSize: 0x40000
+  AppMemoryType: 1
+  Dependency:
+    ac: 0x0004013000002402L
+    am: 0x0004013000001502L
+    boss: 0x0004013000003402L
+    cfg: 0x0004013000001702L
+    csnd: 0x0004013000002702L
+    dsp: 0x0004013000001a02L
+    fs: 0x0004013000001c02L
+    hid: 0x0004013000001d02L
+    http: 0x0004013000002902L
+    mic: 0x0004013000002002L
+    ndm: 0x0004013000002b02L
+    nwm: 0x0004013000002d02L
+    ptm: 0x0004013000002202L
+    ro: 0x0004013000003702L
+    soc: 0x0004013000002e02L
