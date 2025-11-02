@@ -33,12 +33,15 @@ ROMFS		:=	romfs
 INCLUDES	:=	include
 ROMFS		:=	romfs
 
-APP_TITLE		:= Better-NFCReader
+APP_TITLE	:= Better-NFCReader
 APP_DESCRIPTION	:= Read 0x7 NFC/RFID tags
-APP_AUTHOR		:= Jasper Peters (MrJPGames), cylin577
+APP_AUTHOR	:= Jasper Peters (MrJPGames), cylin577
 APP_PRODCODE	:= I-LOVE-YIXI
-APP_HTID		:= 0xBC469
+APP_HTID	:= 0xBC469
 VERSION_MAJOR	:= 1
+VERSION_MINOR	:= 0
+VERSION_PATCH	:= 0
+VERSION_STRING	:= v$(VERSION_MAJOR).$(VERSION_MINOR).$(VERSION_PATCH)
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -145,7 +148,7 @@ clean:
 #---------------------------------------------------------------------------------
 generate:
 	@echo Generating banner.bnr and icon.bin...
-	@bannertool makesmdh -s "Better-NFCReader" -l "Read 0x7 NFC tags!" -p "cylin577" -i icon.png -o resources/icon.bin
+	@bannertool makesmdh -s "$(APP_TITLE)" -l "$(APP_DESCRIPTION)" -p "$(APP_AUTHOR)" -i icon.png -o resources/icon.bin
 	@bannertool makebanner -i resources/banner.png -a resources/audio.wav -o resources/banner.bnr
 #---------------------------------------------------------------------------------
 $(BUILD)/$(TARGET)-strip.elf: $(BUILD)
@@ -156,7 +159,7 @@ cci: $(BUILD)/$(TARGET)-strip.elf
 	@echo "built ... sf2d_sample.3ds"
 #---------------------------------------------------------------------------------
 cia: generate $(BUILD)/$(TARGET)-strip.elf
-	@makerom -f cia -o $(BUILD)/$(TARGET).cia -elf $(BUILD)/$(TARGET)-strip.elf -rsf resources/%(TARGET).rsf -icon resources/icon.bin -banner resources/banner.bnr -exefslogo -target t
+	@makerom -f cia -o $(BUILD)/$(TARGET).cia -elf $(BUILD)/$(TARGET)-strip.elf -rsf resources/$(TARGET).rsf -icon resources/icon.bin -banner resources/banner.bnr -exefslogo -target t -major $(VERSION_MAJOR) -minor $(VERSION_MINOR) -micro $(VERSION_PATCH)
 	@echo "built ... $(TARGET).cia"
 #---------------------------------------------------------------------------------
 send: $(BUILD)
