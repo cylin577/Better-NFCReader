@@ -1,7 +1,7 @@
 # Better-NFCReader
 A better NFC UID Reader for 3DS!
 
-It now read 0x7 tags, which is widely used
+It now read 0x7 tags, which is widely used, and it even generate a QR code from the UID which you can scan using your phone!
 
 ## Building
 
@@ -24,3 +24,10 @@ Possible future additions:<br>
 Please note:<br>
 This was created in the oringnal author's high school days for fun. It is designed to scan the specific type of RFID tag he's high school used. And it will only show the UID (which is the part he's high school used for their systems). It does not do anythings other than that (For now tho)<br>
                                                                                                                                          
+## "Thank you" area
+
+Thanks for the Github user "nayuki" for creating and sharing the library "qrcodegen", which is used to provide UID to QR code function
+
+Thanks for the Github user "MrJPGames" for creating the project "NFCReader", if without the awesome codebase it provides, this project is imposible to make.
+
+Thanks for ALL devkitpro developers making this awesome toolchain. 

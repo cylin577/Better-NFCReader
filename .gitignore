@@ -1,1 +1,5 @@
-./GEMINI.md
+GEMINI.md
+build/
+*.3dsx
+*.3ds
+*.cia
