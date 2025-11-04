@@ -151,15 +151,22 @@ generate:
 	@bannertool makesmdh -s "$(APP_TITLE)" -l "$(APP_DESCRIPTION)" -p "$(APP_AUTHOR)" -i icon.png -o resources/icon.bin
 	@bannertool makebanner -i resources/banner.png -a resources/audio.wav -o resources/banner.bnr
 #---------------------------------------------------------------------------------
+$(BUILD)/$(TARGET).rsf: resources/$(TARGET).rsf $(BUILD)
+	@echo "Generating $(notdir $@)..."
+	@sed -e 's|@@APP_TITLE@@|$(APP_TITLE)|g' \
+		-e 's|@@APP_PRODCODE@@|$(APP_PRODCODE)|g' \
+		-e 's|@@APP_HTID@@|$(APP_HTID)|g' \
+		$< > $@
+#---------------------------------------------------------------------------------
 $(BUILD)/$(TARGET)-strip.elf: $(BUILD)
 	@$(STRIP) --strip-all $(BUILD)/$(TARGET).elf -o $(BUILD)/$(TARGET)-strip.elf
 #---------------------------------------------------------------------------------
-cci: $(BUILD)/$(TARGET)-strip.elf
-	@makerom -f cci -rsf resources/$(TARGET).rsf -target d -exefslogo -elf $(BUILD)/$(TARGET)-strip.elf -o $(BUILD)/$(TARGET).3ds
+cci: $(BUILD)/$(TARGET).rsf $(BUILD)/$(TARGET)-strip.elf
+	@makerom -f cci -rsf $(BUILD)/$(TARGET).rsf -target d -exefslogo -elf $(BUILD)/$(TARGET)-strip.elf -o $(BUILD)/$(TARGET).3ds
 	@echo "built ... sf2d_sample.3ds"
 #---------------------------------------------------------------------------------
-cia: generate $(BUILD)/$(TARGET)-strip.elf
-	@makerom -f cia -o $(BUILD)/$(TARGET).cia -elf $(BUILD)/$(TARGET)-strip.elf -rsf resources/$(TARGET).rsf -icon resources/icon.bin -banner resources/banner.bnr -exefslogo -target t -major $(VERSION_MAJOR) -minor $(VERSION_MINOR) -micro $(VERSION_PATCH)
+cia: generate $(BUILD)/$(TARGET).rsf $(BUILD)/$(TARGET)-strip.elf
+	@makerom -f cia -o $(BUILD)/$(TARGET).cia -elf $(BUILD)/$(TARGET)-strip.elf -rsf $(BUILD)/$(TARGET).rsf -icon resources/icon.bin -banner resources/banner.bnr -exefslogo -target t -major $(VERSION_MAJOR) -minor $(VERSION_MINOR) -micro $(VERSION_PATCH)
 	@echo "built ... $(TARGET).cia"
 #---------------------------------------------------------------------------------
 send: $(BUILD)

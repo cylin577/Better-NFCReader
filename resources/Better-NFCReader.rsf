@@ -1,10 +1,10 @@
 BasicInfo:
 
-  Title                   : $(APP_TITLE)
+  Title                   : @@APP_TITLE@@
 
   CompanyCode             : "00"
 
-  ProductCode             : $(APP_PRODCODE)
+  ProductCode             : @@APP_PRODCODE@@
 
   ContentType             : Application # Application / SystemUpdate / Manual / Child / Trial
 
@@ -14,8 +14,7 @@ BasicInfo:
 
 TitleInfo:
 
-  UniqueId                : $(APP_HTID)
-
+  UniqueId                : @@APP_HTID@@
   Category                : Application # Application / SystemApplication / Applet / Firmware / Base / DlpChild / Demo / Contents / SystemContents / SharedContents / AddOnContents / Patch / AutoUpdateContents
 
 
