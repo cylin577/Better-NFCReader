@@ -26,8 +26,10 @@ This was created in the oringnal author's high school days for fun. It is design
                                                                                                                                          
 ## "Thank you" area
 
-Thanks for the Github user "nayuki" for creating and sharing the library "qrcodegen", which is used to provide UID to QR code function
+Thanks for the Github user "nayuki" for creating and sharing the awesome library "qrcodegen", which is used to provide UID to QR code function
 
 Thanks for the Github user "MrJPGames" for creating the project "NFCReader", if without the awesome codebase it provides, this project is imposible to make.
 
 Thanks for ALL devkitpro developers making this awesome toolchain. 
+
+Thanks Thenaya developer for sharing the awesome .rsf file, without it, CIA build would be impossible
