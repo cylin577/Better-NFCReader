@@ -33,3 +33,5 @@ Thanks for the Github user "MrJPGames" for creating the project "NFCReader", if 
 Thanks for ALL devkitpro developers making this awesome toolchain. 
 
 Thanks Thenaya developer for sharing the awesome .rsf file, without it, CIA build would be impossible
+
+Thanks for JetBrains creating and open-sourcing the awesome "JetBrainsMono" font which is used in the project

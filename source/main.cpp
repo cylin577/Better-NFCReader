@@ -62,7 +62,7 @@ int main(int argc, char **argv)
     gfxSwapBuffers();
     gspWaitForVBlank();
 
-    C2D_Font font = C2D_FontLoad("romfs:/OpenSans.ttf");
+    C2D_Font font = C2D_FontLoad("romfs:/JetBrainsMono-Regular.ttf");
 
     // Yellow screen after font load
     C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
