@@ -148,7 +148,7 @@ clean:
 #---------------------------------------------------------------------------------
 generate:
 	@echo Generating banner.bnr and icon.bin...
-	@bannertool makesmdh -s "$(APP_TITLE)" -l "$(APP_DESCRIPTION)" -p "$(APP_AUTHOR)" -i icon.png -o resources/icon.bin
+	@bannertool makesmdh -s "$(APP_TITLE)" -l "$(APP_DESCRIPTION)" -p "$(APP_AUTHOR)" -i resources/icon.png -o resources/icon.bin
 	@bannertool makebanner -i resources/banner.png -a resources/audio.wav -o resources/banner.bnr
 #---------------------------------------------------------------------------------
 $(BUILD)/$(TARGET).rsf: resources/$(TARGET).rsf $(BUILD)

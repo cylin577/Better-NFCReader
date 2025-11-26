@@ -34,43 +34,11 @@ int main(int argc, char **argv)
     C3D_RenderTarget* top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
     C3D_RenderTarget* bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
-    // Red screen at the beginning
-    C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-    C2D_TargetClear(top, C2D_Color32(255, 0, 0, 255));
-    C3D_FrameEnd(0);
-    gfxFlushBuffers();
-    gfxSwapBuffers();
-    gspWaitForVBlank();
-
     romfsInit();
-
-    // Green screen after romfsInit
-    C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-    C2D_TargetClear(top, C2D_Color32(0, 255, 0, 255));
-    C3D_FrameEnd(0);
-    gfxFlushBuffers();
-    gfxSwapBuffers();
-    gspWaitForVBlank();
 
     Result nfcResult = nfcInit(NFC_OpType_NFCTag);
 
-    // Blue screen after nfcInit
-    C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-    C2D_TargetClear(top, C2D_Color32(0, 0, 255, 255));
-    C3D_FrameEnd(0);
-    gfxFlushBuffers();
-    gfxSwapBuffers();
-    gspWaitForVBlank();
-
     C2D_Font font = C2D_FontLoad("romfs:/OpenSans.ttf");
-
-    // Yellow screen after font load
-    C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-    C2D_TargetClear(top, C2D_Color32(255, 255, 0, 255));
-    C3D_FrameEnd(0);
-    gfxFlushBuffers();
-    gfxSwapBuffers();
-    gspWaitForVBlank();
 
     NFC_App_State appState = NFC_STATE_SCANNING;
     NFC_TagState nfcHardwareState;
@@ -83,14 +51,6 @@ int main(int argc, char **argv)
     C2D_Text g_staticText[3];
 
     Result scanResult = nfcStartScanning(0);
-
-    // White screen after nfcStartScanning
-    C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-    C2D_TargetClear(bottom, C2D_Color32(255, 255, 255, 255));
-    C3D_FrameEnd(0);
-    gfxFlushBuffers();
-    gfxSwapBuffers();
-    gspWaitForVBlank();
 
     // QR Code related variables
     qrcodegen::QrCode qr = qrcodegen::QrCode::encodeText("", qrcodegen::QrCode::Ecc::LOW);
